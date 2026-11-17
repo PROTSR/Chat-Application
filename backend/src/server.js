@@ -14,11 +14,13 @@ const cors = require('cors');
 
 const app = express()
 app.use(express.json())
-app.use(cors({origin:process.env.FRONTEND_ULR, credentials:true}))
+app.use(cors({origin:process.env.FRONTEND_URL, credentials:true}))
 
 app.use(clerkMiddleware())
 
-CronJob
+app.get("/health", (req, res) => {
+  res.status(200).json({ ok: true });
+});
 
 const publicDir = path.join(process.cwd(),'public')
 if(fs.existsSync(publicDir)){
