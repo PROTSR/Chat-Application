@@ -9,13 +9,15 @@ const fs = require('fs')
 const path = require('path')
 const {clerkMiddleware } = require("@clerk/express")
 const cors = require('cors');
-
+const clerkWebhook = require('./webhook/clerkWebhook')
 
 
 const app = express()
+
+app.use('/webhook/clerk',express.raw({type:"application/json"}),clerkWebhook)
+
 app.use(express.json())
 app.use(cors({origin:process.env.FRONTEND_URL, credentials:true}))
-
 app.use(clerkMiddleware())
 
 app.get("/health", (req, res) => {
