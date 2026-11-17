@@ -4,20 +4,21 @@ require("dotenv").config({
 });
 const express = require('express')
 const connectDB = require('./config/db')
+const job = require('./config/cron')
 const fs = require('fs')
 const path = require('path')
 const {clerkMiddleware } = require("@clerk/express")
-const cors = require('cors')
+const cors = require('cors');
 
 
 
 const app = express()
 app.use(express.json())
-app.use(cors({origin:"http://localhost:5173", credentials:true}))
-connectDB()
+app.use(cors({origin:process.env.FRONTEND_ULR, credentials:true}))
+
 app.use(clerkMiddleware())
 
-
+CronJob
 
 const publicDir = path.join(process.cwd(),'public')
 if(fs.existsSync(publicDir)){
@@ -27,5 +28,10 @@ if(fs.existsSync(publicDir)){
     })
 }
 
-app.listen(5000,()=>console.log("server running"))
+app.listen(5000,()=>{
+    connectDB()
+    console.log("server running")
+
+    if(process.env.NODE_ENV === 'production') job.start()
+})
 
