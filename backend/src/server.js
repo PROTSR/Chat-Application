@@ -1,21 +1,25 @@
+// require('dotenv').config
+require("dotenv").config({
+    path: require("path").join(__dirname, "../.env")
+});
 const express = require('express')
-const dotenv = require('dotenv').config
 const connectDB = require('./config/db')
 const fs = require('fs')
 const path = require('path')
 const {clerkMiddleware } = require("@clerk/express")
+const cors = require('cors')
 
 
 
 const app = express()
-
-connectDB()
-
 app.use(express.json())
-app.use(cors({origin:"http://localhost:5173", Credential:true}))
+app.use(cors({origin:"http://localhost:5173", credentials:true}))
+connectDB()
 app.use(clerkMiddleware())
 
-const publicDir = path.join(process.cwd,'public')
+
+
+const publicDir = path.join(process.cwd(),'public')
 if(fs.existsSync(publicDir)){
     app.use(express.static(publicDir))
     app.get("/{*any}",(req,res,next)=>{
