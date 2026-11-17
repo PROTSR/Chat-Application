@@ -1,6 +1,6 @@
-import { CronJob } from "cron";
-import http from "node:http";
-import https from "node:https";
+const { CronJob } = require('cron')
+const http = require("node:http")
+const https = require("node:https")
 
 const job = new CronJob("*/14 * * * *", function () {
   const base = process.env.FRONTEND_URL;
